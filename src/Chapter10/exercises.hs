@@ -54,6 +54,21 @@ myElem :: Eq a => a -> [a] -> Bool
 myElem e = foldr f False
   where f cur acc = cur == e || acc
 
+  -- need folding function :: a -> b -> b
+  -- b is Bool in this case so a -> Bool -> Bool
+
+  -- f = (==e) :: a -> Bool
+  -- g = (||) :: Bool - Bool -> Bool
+  -- g .f 
+  --          a -> Bool
+  --               Bool -> Bool -> Bool
+  -- These cancel ^^^^^
+
+  -- g .f :: a ->          Bool -> Bool
+
+myElem2 :: Eq a => a -> [a] -> Bool
+myElem2 e = foldr ((||) . (==e)) False
+
 myElemAny :: Eq a => a -> [a] -> Bool
 myElemAny e = myAny (==e)
 
@@ -63,8 +78,22 @@ myReverse = foldl (flip (:)) []
 
 -- 5.
 myMap :: (a -> b) -> [a] -> [b]
-myMap f = foldr g []
-  where g cur acc = f cur : acc
+myMap f = foldr ((:) . f) []
+-- myMap f = foldr g []
+--   where g cur acc = f cur : acc
+
+  -- need folding function :: a -> b -> b
+  -- b is [b] in this case so a -> [b] -> [b]
+
+  -- f :: a -> b
+  -- g = (:) :: b -> [b] -> [b]
+  -- g .f 
+  --          a -> b
+  --               b -> [b] -> [b]
+  -- These cancel ^^
+
+  -- g .f :: a ->       [b] -> [b]
+
 
 -- 6.
 myFilter :: (a -> Bool) -> [a] -> [a]
@@ -78,8 +107,24 @@ squish = foldr (++) []
 -- 8.
 -- how do I use composition?  concat . f doesn't work
 squishMap :: (a -> [b]) -> [a] -> [b]
-squishMap f = foldr g []
-  where g cur acc = f cur ++ acc
+-- squishMap f = foldr g []
+  -- where g cur acc = f cur ++ acc
+
+  -- need folding function :: a -> b -> b
+  -- b is [b] in this case so a -> [b] -> [b]
+
+  -- f :: a -> [b]
+  -- g = (++) :: [b] -> [b] -> [b]
+  -- g .f 
+  --          a -> [b]
+  --               [b] -> [b] -> [b]
+  -- These cancel ^^^^
+
+  -- g .f :: a ->       [b] -> [b]
+
+squishMap f = foldr ((++) . f) []
+
+ -- f takes one argument, but foldr sends two arguments (two unary functions) to the folding function.  What happens to the second argument/function?
 
 -- 9.
 squishAgain :: [[a]] -> [a]
