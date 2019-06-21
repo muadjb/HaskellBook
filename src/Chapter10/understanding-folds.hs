@@ -1,6 +1,6 @@
 foldr :: (a -> b -> b) -> b -> [a] -> b
-foldr f acc [] = acc
-foldr f acc (x:xs) = f x (foldr f acc xs)
+foldr f b [] = b
+foldr f b (x:xs) = f x (foldr f b xs)
 
 
 foldl :: (b -> a -> b) -> b -> [a] -> b
