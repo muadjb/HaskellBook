@@ -36,3 +36,6 @@ capitalizeParagraph = unwords . map f . words
 
 capitalizeParagraph2 :: String -> String
 capitalizeParagraph2 = unwords . map capitalizeWord . words
+ 
+
+-- Phone
