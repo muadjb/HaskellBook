@@ -1,4 +1,5 @@
 module Main where
+import Geometry
 
 main :: IO ()
-main = putStrLn "hi"
+main = print $ sphereVolume 2.3
