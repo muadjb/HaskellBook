@@ -248,7 +248,6 @@ newtype Comp a = Comp { unComp :: (a -> a) }
 --   show (Comp _) = "Comp instance"
 
 instance Semigroup a => Semigroup (Comp a) where
-  -- (Comp f) <> (Comp  g) = Comp (f <> g)
   (Comp f) <> (Comp  g) = Comp (f . g)
 
 -- from https://stackoverflow.com/questions/41350192/how-to-test-semigroup-law-for-this-data-type
