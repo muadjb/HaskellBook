@@ -2,10 +2,10 @@ import Data.Monoid
 
 newtype Mem s a = Mem { runMem :: s -> (a,s) }
 
-combineMems f g x = (a <> b, s')
+combineMems f g s = (a <> b, s'')
     where
-      (a, s) = g x
-      (b, s') = f s
+      (a, s') = g s
+      (b, s'') = f s'
 
 instance Semigroup a => Semigroup (Mem s a) where
   (Mem f) <> (Mem g) = Mem $ combineMems f g
@@ -25,3 +25,4 @@ main = do
   -- print $ (rmzero :: (Sum Int, Int))
   print $ rmleft == runMem f' 0
   print $ rmright == runMem f' 0
+  print $ runMem (f' <> f') 0
